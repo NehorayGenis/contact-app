@@ -4,12 +4,13 @@ import { Link, Navigate, useNavigate } from "react-router-dom"
 import { NiceButton } from "../cmps/NiceButton"
 import { ContactFilter } from "../cmps/ContactFilter"
 import { ContactList } from "../cmps/ContactList"
-import { loadContacts, removeContact, setFilterBy } from "../store/actions/contactActions"
+import { loadContacts, removeContact, setFilterBy, toggleFavorite } from "../store/actions/contactActions"
 import { spendBalance } from "../store/actions/userActions"
 
 export const ContactApp = (props) => {
     const navigate = useNavigate()
     const contacts = useSelector((state) => state.contactModule.contacts)
+    const favoriteContacts = useSelector((state) => state.contactModule.favoriteContacts)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -21,6 +22,11 @@ export const ContactApp = (props) => {
         // loadContacts()
         await dispatch(removeContact(contactId))
     }
+    const onToggleFavorite = async (contactId) => {
+        // await contactService.remove(contactId)
+        // loadContacts()
+        await dispatch(toggleFavorite(contactId))
+    }
 
     const onChangeFilter = useCallback((filterBy) => {
         // setState({ filterBy }, loadContacts)
@@ -28,9 +34,9 @@ export const ContactApp = (props) => {
         dispatch(loadContacts())
     }, [])
 
-    const onSpendBalance = () => {
-        dispatch(spendBalance(5))
-    }
+    // const onSpendBalance = () => {
+    //     dispatch(spendBalance(5))
+    // }
 
     // const getBigNum = () => {
     //     let sum = 0
@@ -61,7 +67,7 @@ export const ContactApp = (props) => {
         <div className="contact-app">
             <ContactFilter onChangeFilter={onChangeFilter} />
             <Link to={`/contact/edit`} className="button_plus"></Link>
-            <ContactList history={props.history} onRemoveContact={onRemoveContact} contacts={contacts} />
+            <ContactList history={props.history} onRemoveContact={onRemoveContact} onToggleFavorite={onToggleFavorite} contacts={contacts} favoriteContacts={favoriteContacts}/>
         </div>
     )
 }

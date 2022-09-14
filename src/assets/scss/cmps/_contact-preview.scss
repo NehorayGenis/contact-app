@@ -46,6 +46,11 @@
                 text-decoration: underline;
             }
         }
+        a .fa-star{
+            &:hover,.isFavorite {
+                color: yellow;
+            }
+        }
     }
 
     &:hover .actions {
